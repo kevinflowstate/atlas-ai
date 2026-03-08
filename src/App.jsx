@@ -1,7 +1,25 @@
 import { useState, useEffect, useRef } from 'react'
 
-const CheckIcon = ({ className = '' }) => (
-  <svg className={className} fill="currentColor" viewBox="0 0 20 20">
+// ─── HOOKS ───
+function useInView(threshold = 0.12) {
+  const ref = useRef(null)
+  const [visible, setVisible] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.unobserve(el) } },
+      { threshold }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+  return [ref, visible]
+}
+
+// ─── UTILITY ICONS ───
+const CheckIcon = ({ className = '', style }) => (
+  <svg className={className} style={style} fill="currentColor" viewBox="0 0 20 20">
     <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
   </svg>
 )
@@ -9,6 +27,86 @@ const CheckIcon = ({ className = '' }) => (
 const ChevronDown = ({ className = '' }) => (
   <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+  </svg>
+)
+
+const IconX = ({ className = '' }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+  </svg>
+)
+
+// ─── CLINICAL SVG ICONS ───
+const IconClipboard = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect x="8" y="2" width="8" height="4" rx="1" />
+    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+    <path d="m9 14 2 2 4-4" />
+  </svg>
+)
+
+const IconCalendarCheck = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect x="3" y="4" width="18" height="18" rx="2" />
+    <line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" />
+    <line x1="3" y1="10" x2="21" y2="10" />
+    <path d="m9 16 2 2 4-4" />
+  </svg>
+)
+
+const IconStar = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+  </svg>
+)
+
+const IconSpine = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" {...props}>
+    <ellipse cx="12" cy="4" rx="4" ry="2" />
+    <ellipse cx="12" cy="9.5" rx="4.5" ry="2.2" />
+    <ellipse cx="12" cy="15" rx="4" ry="2" />
+    <ellipse cx="12" cy="20" rx="3.5" ry="1.8" />
+    <line x1="12" y1="6" x2="12" y2="7.3" />
+    <line x1="12" y1="11.7" x2="12" y2="13" />
+    <line x1="12" y1="17" x2="12" y2="18.2" />
+  </svg>
+)
+
+const IconAdjust = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" {...props}>
+    <circle cx="12" cy="12" r="8" />
+    <path d="M12 4v3M12 17v3M4 12h3M17 12h3" />
+    <path d="m7.05 7.05 1.4 1.4M15.55 15.55l1.4 1.4M7.05 16.95l1.4-1.4M15.55 8.45l1.4-1.4" />
+  </svg>
+)
+
+const IconActivity = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+  </svg>
+)
+
+const IconHand = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M18 11V6a2 2 0 0 0-4 0" />
+    <path d="M14 10V4a2 2 0 0 0-4 0v2" />
+    <path d="M10 10.5V6a2 2 0 0 0-4 0v8" />
+    <path d="M18 8a2 2 0 0 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 13" />
+  </svg>
+)
+
+const IconFoot = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0z" />
+    <path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0z" />
+    <path d="M16 17h4" /><path d="M4 13h4" />
+  </svg>
+)
+
+const IconBrain = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" {...props}>
+    <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z" />
+    <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2z" />
   </svg>
 )
 
@@ -23,24 +121,18 @@ function AtlasIcon({ size = 36, color = 'gradient' }) {
           <stop offset="100%" stopColor="#06b6d4" />
         </linearGradient>
       </defs>
-      {/* Outer vertebra ring */}
       <circle cx="20" cy="20" r="16" stroke={color === 'white' ? '#fff' : `url(#${id})`} strokeWidth="2.2" fill="none" />
-      {/* Spinal canal */}
       <circle cx="20" cy="20" r="5" stroke={color === 'white' ? '#fff' : `url(#${id})`} strokeWidth="1.8" fill="none" opacity="0.7" />
-      {/* Lateral masses */}
       <circle cx="5" cy="20" r="3.5" fill={color === 'white' ? '#fff' : `url(#${id})`} opacity="0.9" />
       <circle cx="35" cy="20" r="3.5" fill={color === 'white' ? '#fff' : `url(#${id})`} opacity="0.9" />
-      {/* Transverse process bridges */}
       <path d="M8.5 20 L14 20" stroke={color === 'white' ? '#fff' : `url(#${id})`} strokeWidth="1.8" strokeLinecap="round" opacity="0.7" />
       <path d="M26 20 L31.5 20" stroke={color === 'white' ? '#fff' : `url(#${id})`} strokeWidth="1.8" strokeLinecap="round" opacity="0.7" />
-      {/* Spinous process dots */}
       <circle cx="20" cy="4" r="2" fill={color === 'white' ? '#fff' : `url(#${id})`} opacity="0.5" />
       <circle cx="20" cy="36" r="2" fill={color === 'white' ? '#fff' : `url(#${id})`} opacity="0.5" />
     </svg>
   )
 }
 
-// Small gradient icon for chat avatars
 function AtlasAvatarIcon({ size = 28 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -70,48 +162,20 @@ function Logo() {
   )
 }
 
-// ─── NOTIFICATION CARDS ───
-function NotificationCards() {
-  const cards = [
-    {
-      icon: "📋",
-      iconClass: "notif-card__icon--blue",
-      label: "New Booking",
-      labelClass: "notif-card__label--blue",
-      title: "Initial Assessment - Physiotherapy",
-      time: "2 minutes ago",
-    },
-    {
-      icon: "💆",
-      iconClass: "notif-card__icon--cyan",
-      label: "New Booking",
-      labelClass: "notif-card__label--cyan",
-      title: "Sports Massage - 60 min",
-      time: "8 minutes ago",
-    },
-    {
-      icon: "⭐",
-      iconClass: "notif-card__icon--green",
-      label: "New Review",
-      labelClass: "notif-card__label--green",
-      title: "5-star Google Review received",
-      time: "Just now",
-    },
-  ]
-
+// ─── SPINE BACKGROUND DECORATION ───
+function SpineDecoration({ side = 'left' }) {
   return (
-    <div className="notif-stack">
-      {cards.map((card, i) => (
-        <div key={i} className="notif-card">
-          <div className="notif-card__header">
-            <div className={`notif-card__icon ${card.iconClass}`}>{card.icon}</div>
-            <span className={`notif-card__label ${card.labelClass}`}>{card.label}</span>
-          </div>
-          <div className="notif-card__title">{card.title}</div>
-          <div className="notif-card__time">{card.time}</div>
-        </div>
+    <svg className={`spine-deco spine-deco--${side}`} viewBox="0 0 60 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {[0, 1, 2, 3, 4, 5, 6].map(i => (
+        <g key={i} opacity={0.035 + (i % 3) * 0.01}>
+          <ellipse cx="30" cy={40 + i * 80} rx="18" ry="10" stroke="currentColor" strokeWidth="0.8" />
+          <circle cx="30" cy={40 + i * 80} r="4" stroke="currentColor" strokeWidth="0.6" />
+          {i < 6 && <line x1="30" y1={50 + i * 80} x2="30" y2={70 + i * 80} stroke="currentColor" strokeWidth="0.6" />}
+          <line x1="12" y1={40 + i * 80} x2="6" y2={38 + i * 80} stroke="currentColor" strokeWidth="0.6" />
+          <line x1="48" y1={40 + i * 80} x2="54" y2={38 + i * 80} stroke="currentColor" strokeWidth="0.6" />
+        </g>
       ))}
-    </div>
+    </svg>
   )
 }
 
@@ -149,6 +213,98 @@ function Nav() {
   )
 }
 
+// ─── HERO PHONE MOCKUP ───
+function HeroPhone() {
+  const messages = [
+    { from: 'patient', text: "Hi, I've had lower back pain for about 2 weeks. Any availability?" },
+    { from: 'atlas', text: "Hi! Sorry to hear that. Is this a new injury, or something recurring?" },
+    { from: 'patient', text: "New - started after lifting at work." },
+    { from: 'atlas', text: "I'd recommend an initial assessment. Thursday 10:30am or Friday 2pm work?" },
+  ]
+
+  const [phase, setPhase] = useState(0)
+  const totalPhases = messages.length * 2
+
+  useEffect(() => {
+    let timer
+    if (phase === 0) {
+      timer = setTimeout(() => setPhase(1), 800)
+    } else if (phase % 2 === 1) {
+      timer = setTimeout(() => setPhase(phase + 1), 1300)
+    } else if (phase < totalPhases) {
+      timer = setTimeout(() => setPhase(phase + 1), 1800)
+    } else {
+      timer = setTimeout(() => setPhase(0), 5000)
+    }
+    return () => clearTimeout(timer)
+  }, [phase, totalPhases])
+
+  const visibleCount = Math.floor(phase / 2)
+  const showTyping = phase % 2 === 1 && phase <= totalPhases
+
+  return (
+    <div className="hero-phone">
+      <div className="hero-phone__notch" />
+      <div className="hero-phone__header">
+        <div className="hero-phone__avatar"><AtlasAvatarIcon size={28} /></div>
+        <div>
+          <div className="hero-phone__name">City Physio Clinic</div>
+          <div className="hero-phone__status">
+            <span className="hero-phone__status-dot" />
+            ATLAS is online
+          </div>
+        </div>
+      </div>
+      <div className="hero-phone__messages">
+        {messages.slice(0, visibleCount).map((msg, i) => (
+          <div key={i} className={`hero-phone__msg hero-phone__msg--${msg.from}`}>
+            {msg.text}
+          </div>
+        ))}
+        {showTyping && (
+          <div className="hero-phone__typing">
+            <span /><span /><span />
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ─── HERO FLOATING TOASTS ───
+function HeroToasts() {
+  const toasts = [
+    { icon: <IconClipboard className="hero-toast__svg" />, text: "New booking confirmed", color: 'blue' },
+    { icon: <IconStar className="hero-toast__svg" />, text: "5-star review received", color: 'green' },
+    { icon: <IconCalendarCheck className="hero-toast__svg" />, text: "Reminder sent automatically", color: 'cyan' },
+  ]
+  const [active, setActive] = useState(-1)
+
+  useEffect(() => {
+    const startTimer = setTimeout(() => setActive(0), 2000)
+    return () => clearTimeout(startTimer)
+  }, [])
+
+  useEffect(() => {
+    if (active < 0) return
+    const timer = setInterval(() => {
+      setActive(prev => (prev + 1) % toasts.length)
+    }, 3500)
+    return () => clearInterval(timer)
+  }, [active >= 0])
+
+  return (
+    <div className="hero-toasts">
+      {toasts.map((toast, i) => (
+        <div key={i} className={`hero-toast hero-toast--${toast.color} hero-toast--pos${i} ${active === i ? 'hero-toast--visible' : ''}`}>
+          {toast.icon}
+          <span>{toast.text}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 // ─── HERO ───
 function Hero() {
   return (
@@ -159,60 +315,65 @@ function Hero() {
         <div className="hero__orb hero__orb--3" />
         <div className="hero__grid" />
       </div>
+      <SpineDecoration side="left" />
 
-      <div className="hero__content">
-        <div className="hero__badge">
-          <div className="hero__badge-dot" />
-          <span className="hero__badge-text">AI-Powered Patient Management</span>
-        </div>
-
-        <div className="hero__title-group">
-          {/* Spine line above */}
-          <div className="hero__spine">
-            <div className="hero__spine-dot" />
-            <div className="hero__spine-line" />
-            <div className="hero__spine-dot hero__spine-dot--lg" />
-            <div className="hero__spine-line hero__spine-line--short" />
+      <div className="hero__split">
+        <div className="hero__text">
+          <div className="hero__badge">
+            <div className="hero__badge-dot" />
+            <span className="hero__badge-text">AI-Powered Patient Management</span>
           </div>
-          <h1 className="hero__title">
-            <span className="hero__title-letter">A</span>
-            <span className="hero__title-letter">T</span>
-            <span className="hero__title-letter">L</span>
-            <span className="hero__title-letter">A</span>
-            <span className="hero__title-letter">S</span>
-          </h1>
-          {/* Spine line below */}
-          <div className="hero__spine">
-            <div className="hero__spine-line hero__spine-line--short" />
-            <div className="hero__spine-dot hero__spine-dot--lg" />
-            <div className="hero__spine-line" />
-            <div className="hero__spine-dot" />
-          </div>
-        </div>
-        <div className="hero__tagline">
-          <span className="gradient-text">Your first point of contact.</span>
-        </div>
 
-        <p className="subtitle subtitle--center hero__subtitle">
-          AI-powered patient intake, appointment booking, and follow-up for physio clinics,
-          chiropractors, and clinical practices. Never miss a patient enquiry again.
-        </p>
-
-        <div className="hero__actions">
-          <a href="#pricing" className="btn btn--primary">See Plans</a>
-          <a href="#how-it-works" className="btn btn--outline">How It Works</a>
-        </div>
-
-        <div className="hero__proof">
-          {["No manual follow-ups", "Set up in 48 hours", "Cancel anytime"].map((t, i) => (
-            <div key={i} className="hero__proof-item">
-              <CheckIcon className="hero__proof-check" />
-              <span>{t}</span>
+          <div className="hero__title-group">
+            <div className="hero__spine">
+              <div className="hero__spine-dot" />
+              <div className="hero__spine-line" />
+              <div className="hero__spine-dot hero__spine-dot--lg" />
+              <div className="hero__spine-line hero__spine-line--short" />
             </div>
-          ))}
+            <h1 className="hero__title">
+              <span className="hero__title-letter">A</span>
+              <span className="hero__title-letter">T</span>
+              <span className="hero__title-letter">L</span>
+              <span className="hero__title-letter">A</span>
+              <span className="hero__title-letter">S</span>
+            </h1>
+            <div className="hero__spine">
+              <div className="hero__spine-line hero__spine-line--short" />
+              <div className="hero__spine-dot hero__spine-dot--lg" />
+              <div className="hero__spine-line" />
+              <div className="hero__spine-dot" />
+            </div>
+          </div>
+
+          <div className="hero__tagline">
+            <span className="gradient-text">Your first point of contact.</span>
+          </div>
+
+          <p className="subtitle hero__subtitle">
+            AI-powered patient intake, appointment booking, and follow-up for physio clinics,
+            chiropractors, and clinical practices. Never miss a patient enquiry again.
+          </p>
+
+          <div className="hero__actions">
+            <a href="#pricing" className="btn btn--primary">See Plans</a>
+            <a href="#how-it-works" className="btn btn--outline">How It Works</a>
+          </div>
+
+          <div className="hero__proof">
+            {["No manual follow-ups", "Set up in 48 hours", "Cancel anytime"].map((t, i) => (
+              <div key={i} className="hero__proof-item">
+                <CheckIcon className="hero__proof-check" />
+                <span>{t}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <NotificationCards />
+        <div className="hero__visual">
+          <HeroPhone />
+          <HeroToasts />
+        </div>
       </div>
 
       <div className="hero__scroll">
@@ -224,32 +385,52 @@ function Hero() {
   )
 }
 
-// ─── PROBLEM ───
+// ─── PROBLEM (Before / After comparison) ───
 function Problem() {
-  const stats = [
-    { icon: "📱", stat: "62%", label: "of calls to clinics go unanswered" },
-    { icon: "⏰", stat: "3hrs+", label: "average reply time to DMs" },
-    { icon: "🚪", stat: "40%", label: "of no-shows never get chased" },
-    { icon: "⭐", stat: "8%", label: "of happy patients leave reviews" },
+  const [ref, visible] = useInView()
+  const without = [
+    { icon: <IconX className="compare__x" />, text: "Phone rings mid-session - goes straight to voicemail" },
+    { icon: <IconX className="compare__x" />, text: "Instagram DMs sit unread until you finish for the day" },
+    { icon: <IconX className="compare__x" />, text: "No-shows cost you revenue - no reminder system in place" },
+    { icon: <IconX className="compare__x" />, text: "Satisfied patients leave without being asked to review" },
+  ]
+  const withAtlas = [
+    { icon: <CheckIcon className="compare__check" />, text: "Every call answered instantly, 24/7 - booking confirmed" },
+    { icon: <CheckIcon className="compare__check" />, text: "DMs replied to in under 60 seconds, day and night" },
+    { icon: <CheckIcon className="compare__check" />, text: "Automated reminders 24h and 1h before - no-shows drop" },
+    { icon: <CheckIcon className="compare__check" />, text: "Review requests sent after every appointment automatically" },
   ]
 
   return (
-    <section className="section">
+    <section ref={ref} className={`section ${visible ? 'in-view' : ''}`}>
+      <SpineDecoration side="right" />
       <div className="container">
         <div className="text-center" style={{ marginBottom: '64px' }}>
+          <span className="eyebrow">The Reality</span>
           <h2>Your front desk has <span className="gradient-text">blind spots.</span></h2>
           <p className="subtitle subtitle--center" style={{ marginTop: '16px' }}>
             Every missed message is a patient who went somewhere else.
           </p>
         </div>
-        <div className="grid-4">
-          {stats.map((s, i) => (
-            <div key={i} className="card stat-card">
-              <div className="stat-card__icon">{s.icon}</div>
-              <div className="stat-card__number">{s.stat}</div>
-              <div className="stat-card__label">{s.label}</div>
-            </div>
-          ))}
+        <div className="compare">
+          <div className="compare__side compare__side--without">
+            <div className="compare__label compare__label--without">Without ATLAS</div>
+            {without.map((item, i) => (
+              <div key={i} className="compare__item compare__item--without" style={{ animationDelay: `${i * 120}ms` }}>
+                {item.icon}
+                <span>{item.text}</span>
+              </div>
+            ))}
+          </div>
+          <div className="compare__side compare__side--with">
+            <div className="compare__label compare__label--with">With ATLAS</div>
+            {withAtlas.map((item, i) => (
+              <div key={i} className="compare__item compare__item--with" style={{ animationDelay: `${(i * 120) + 400}ms` }}>
+                {item.icon}
+                <span>{item.text}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -258,8 +439,9 @@ function Problem() {
 
 // ─── FEATURES ───
 function Features() {
+  const [ref, visible] = useInView()
   return (
-    <section id="features" className="section">
+    <section ref={ref} id="features" className={`section ${visible ? 'in-view' : ''}`}>
       <div className="container">
         <div className="text-center" style={{ marginBottom: '64px' }}>
           <span className="eyebrow">Two Channels, One Brain</span>
@@ -270,7 +452,6 @@ function Features() {
         </div>
 
         <div className="grid-2">
-          {/* Voice AI */}
           <div className="feature-card feature-card--voice">
             <div className="feature-card__glow" style={{ background: 'rgba(37,99,235,0.06)' }} />
             <div style={{ position: 'relative' }}>
@@ -298,7 +479,6 @@ function Features() {
             </div>
           </div>
 
-          {/* DM Management */}
           <div className="feature-card feature-card--dm">
             <div className="feature-card__glow" style={{ background: 'rgba(6,182,212,0.06)' }} />
             <div style={{ position: 'relative' }}>
@@ -331,55 +511,9 @@ function Features() {
   )
 }
 
-// ─── CONVERSATION DEMO ───
-function ConversationDemo() {
-  const messages = [
-    { from: "patient", text: "Hi, I've been having lower back pain for about 2 weeks. Do you have availability this week?" },
-    { from: "atlas", text: "Hi there! Sorry to hear about your back pain. I can help you get booked in. Quick question - is this a new injury, or something recurring?" },
-    { from: "patient", text: "It started after lifting something at work. Never had it before." },
-    { from: "atlas", text: "Got it - sounds like an acute mechanical injury. I'd recommend an initial assessment. We have Thursday at 10:30am or Friday at 2pm - which works?" },
-    { from: "patient", text: "Thursday 10:30 works perfectly" },
-    { from: "atlas", text: "Brilliant - you're booked for Thursday 10:30am, initial physiotherapy assessment. Wear comfortable clothing and arrive 5 mins early. See you then!" },
-  ]
-
-  return (
-    <section className="section demo">
-      <div className="demo__bg" />
-      <div className="container--narrow" style={{ position: 'relative' }}>
-        <div className="text-center" style={{ marginBottom: '64px' }}>
-          <span className="eyebrow">See It In Action</span>
-          <h2>Natural. Clinical. <span className="gradient-text">Effective.</span></h2>
-          <p className="subtitle subtitle--center" style={{ marginTop: '16px' }}>
-            From enquiry to booked appointment in under 2 minutes.
-          </p>
-        </div>
-
-        <div className="phone">
-          <div className="phone__header">
-            <div className="phone__avatar"><AtlasAvatarIcon size={32} /></div>
-            <div>
-              <div className="phone__name">City Physio Clinic</div>
-              <div className="phone__status">
-                <div className="phone__status-dot" />
-                ATLAS is online
-              </div>
-            </div>
-          </div>
-          <div className="phone__messages">
-            {messages.map((msg, i) => (
-              <div key={i} className={`msg msg--${msg.from === 'patient' ? 'patient' : 'atlas'}`}>
-                {msg.text}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
 // ─── HOW IT WORKS ───
 function HowItWorks() {
+  const [ref, visible] = useInView()
   const steps = [
     { num: "01", title: "Patient reaches out", desc: "Via phone, Instagram, or Facebook. ATLAS responds in seconds.", color: "linear-gradient(135deg, #2563eb, #3b82f6)" },
     { num: "02", title: "ATLAS qualifies", desc: "Asks the right questions - injury type, urgency, location - tailored to your practice.", color: "linear-gradient(135deg, #3b82f6, #06b6d4)" },
@@ -389,7 +523,7 @@ function HowItWorks() {
   ]
 
   return (
-    <section id="how-it-works" className="section">
+    <section ref={ref} id="how-it-works" className={`section ${visible ? 'in-view' : ''}`}>
       <div className="container--narrow">
         <div className="text-center" style={{ marginBottom: '64px' }}>
           <span className="eyebrow">The Patient Journey</span>
@@ -401,7 +535,7 @@ function HowItWorks() {
 
         <div className="steps">
           {steps.map((step, i) => (
-            <div key={i} className="step">
+            <div key={i} className="step" style={{ animationDelay: `${i * 100}ms` }}>
               <div className="step__indicator">
                 <div className="step__num" style={{ background: step.color }}>{step.num}</div>
                 {i < steps.length - 1 && <div className="step__line" />}
@@ -420,8 +554,18 @@ function HowItWorks() {
 
 // ─── BUILT FOR CLINICS ───
 function BuiltForClinics() {
+  const [ref, visible] = useInView()
+  const specialities = [
+    { name: "Physiotherapy", icon: <IconSpine className="speciality-card__svg" />, color: '#2563eb' },
+    { name: "Chiropractic", icon: <IconAdjust className="speciality-card__svg" />, color: '#3b82f6' },
+    { name: "Sports Rehab", icon: <IconActivity className="speciality-card__svg" />, color: '#06b6d4' },
+    { name: "Osteopathy", icon: <IconHand className="speciality-card__svg" />, color: '#22d3ee' },
+    { name: "Podiatry", icon: <IconFoot className="speciality-card__svg" />, color: '#2dd4bf' },
+    { name: "Occupational Therapy", icon: <IconBrain className="speciality-card__svg" />, color: '#34d399' },
+  ]
+
   return (
-    <section className="section">
+    <section ref={ref} className={`section ${visible ? 'in-view' : ''}`}>
       <div className="container">
         <div className="clinics-grid">
           <div className="clinics-left">
@@ -449,16 +593,11 @@ function BuiltForClinics() {
             </ul>
           </div>
           <div className="speciality-grid">
-            {[
-              { name: "Physiotherapy", icon: "🦴" },
-              { name: "Chiropractic", icon: "🔄" },
-              { name: "Sports Rehab", icon: "🏃" },
-              { name: "Osteopathy", icon: "🤲" },
-              { name: "Podiatry", icon: "🦶" },
-              { name: "Occupational Therapy", icon: "🧠" },
-            ].map((s, i) => (
-              <div key={i} className="card speciality-card">
-                <div className="speciality-card__icon">{s.icon}</div>
+            {specialities.map((s, i) => (
+              <div key={i} className="card speciality-card" style={{ animationDelay: `${i * 80}ms` }}>
+                <div className="speciality-card__icon-wrap" style={{ background: `${s.color}15`, color: s.color }}>
+                  {s.icon}
+                </div>
                 <div className="speciality-card__name">{s.name}</div>
               </div>
             ))}
@@ -471,6 +610,7 @@ function BuiltForClinics() {
 
 // ─── SPEAK TO ATLAS (Interactive Chat) ───
 function SpeakToAtlas() {
+  const [ref, visible] = useInView()
   const [messages, setMessages] = useState([
     { from: 'atlas', text: "Hi there! Welcome to City Physio Clinic. I'm ATLAS, your AI patient assistant. How can I help you today?" }
   ])
@@ -493,7 +633,6 @@ function SpeakToAtlas() {
 
   const getResponse = (userMsg) => {
     const msg = userMsg.toLowerCase()
-
     if (msg.includes('back') || msg.includes('pain') || msg.includes('injury') || msg.includes('hurt') || msg.includes('sore')) {
       return "Sorry to hear that! I can help get you booked in. Is this a new injury, or something that's been bothering you for a while?"
     }
@@ -527,11 +666,9 @@ function SpeakToAtlas() {
   const handleSend = (text) => {
     const msgText = text || input.trim()
     if (!msgText) return
-
     setMessages(prev => [...prev, { from: 'user', text: msgText }])
     setInput('')
     setTyping(true)
-
     setTimeout(() => {
       setTyping(false)
       setMessages(prev => [...prev, { from: 'atlas', text: getResponse(msgText) }])
@@ -548,7 +685,7 @@ function SpeakToAtlas() {
   const showSuggestions = messages.length <= 1 && !typing
 
   return (
-    <section className="section live-chat">
+    <section ref={ref} className={`section live-chat ${visible ? 'in-view' : ''}`}>
       <div className="live-chat__bg" />
       <div className="container--narrow" style={{ position: 'relative' }}>
         <div className="text-center" style={{ marginBottom: '64px' }}>
@@ -623,6 +760,7 @@ function SpeakToAtlas() {
 
 // ─── PRICING ───
 function Pricing() {
+  const [ref, visible] = useInView()
   const [annual, setAnnual] = useState(false)
 
   const plans = [
@@ -678,7 +816,7 @@ function Pricing() {
   ]
 
   return (
-    <section id="pricing" className="section">
+    <section ref={ref} id="pricing" className={`section ${visible ? 'in-view' : ''}`}>
       <div className="container">
         <div className="text-center" style={{ marginBottom: '16px' }}>
           <span className="eyebrow">Pricing</span>
@@ -736,6 +874,7 @@ function Pricing() {
 
 // ─── FAQ ───
 function FAQ() {
+  const [ref, visible] = useInView()
   const [open, setOpen] = useState(null)
   const faqs = [
     { q: "Will patients know they're talking to AI?", a: "ATLAS is conversational and natural. Most patients won't realise - and those who do appreciate the instant responses. If anyone asks to speak to a person, ATLAS hands off immediately." },
@@ -747,7 +886,7 @@ function FAQ() {
   ]
 
   return (
-    <section className="section">
+    <section ref={ref} className={`section ${visible ? 'in-view' : ''}`}>
       <div className="container--tight">
         <div className="text-center" style={{ marginBottom: '64px' }}>
           <h2>Common Questions</h2>
@@ -770,8 +909,9 @@ function FAQ() {
 
 // ─── FINAL CTA ───
 function FinalCTA() {
+  const [ref, visible] = useInView()
   return (
-    <section className="section cta">
+    <section ref={ref} className={`section cta ${visible ? 'in-view' : ''}`}>
       <div className="cta__bg" />
       <div className="cta__glow" />
       <div className="container--narrow text-center" style={{ position: 'relative' }}>
@@ -815,7 +955,6 @@ export default function App() {
       <Hero />
       <Problem />
       <Features />
-      <ConversationDemo />
       <HowItWorks />
       <BuiltForClinics />
       <SpeakToAtlas />
